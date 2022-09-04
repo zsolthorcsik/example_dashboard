@@ -1,2 +1,6 @@
 env/
 access/
+*.log
+*.pot
+*.pyc
+__pycache__
