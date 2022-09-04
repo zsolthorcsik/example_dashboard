@@ -13,7 +13,8 @@ import pandas as pd
 import numpy as np
 from django_plotly_dash import DjangoDash
 
-app = DjangoDash('Example_Home')   # replaces dash.Dash
+external_stylesheets = ["/static/main/css/charts.css"]
+app = DjangoDash('Example_Home', external_stylesheets=external_stylesheets)   # replaces dash.Dash
 ps.plotly_styles_setup()
 
 app.layout = html.Div(
@@ -32,7 +33,9 @@ app.layout = html.Div(
             dcc.Graph(id='lead_num_by_office_and_agent', style={"width":"50%", "display":"inline-block"}),
             dcc.Graph(id='lead_value_by_office_and_agent', style={"width":"50%", "display":"inline-block"})
         ]),
-        dcc.Graph('lead_value_by_country')
+        dcc.Graph('contract_values_by_agent_bar'),
+        dcc.Graph('lead_value_by_country'),
+
 
     ],
     style={"margin":"auto","text-align":"center", "width":"100%"}
@@ -46,6 +49,7 @@ app.layout = html.Div(
         Output('kpi_line_chart', 'figure'),
         Output('lead_num_by_office_and_agent', 'figure'),
         Output('lead_value_by_office_and_agent', 'figure'),
+        Output('contract_values_by_agent_bar', 'figure'),
         Output('lead_value_by_country', 'figure')
     ],
 
@@ -64,7 +68,10 @@ def callback_date(start_date_input, end_date_input):
     figs.append(home_charts.kpi_time_series())
     figs.append(home_charts.leads_num_sunburst())
     figs.append(home_charts.leads_value_sunburst())
+    figs.append(home_charts.contract_values_by_agent_bar())
     figs.append(home_charts.lead_value_by_country())
+
+
     text = "Data shown: {} - {}".format(start_date.strftime("%Y-%m-%d"), end_date.strftime("%Y-%m-%d"))
 
     return [text] + figs

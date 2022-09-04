@@ -1,0 +1,5 @@
+iframe {
+  pointer-events: none;
+  overflow: visible;
+  height:auto;
+}
